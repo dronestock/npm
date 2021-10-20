@@ -12,10 +12,6 @@
 [ -z "${PLUGIN_TAG}" ] && PLUGIN_TAG=${TAG}
 [ -z "${PLUGIN_ACCESS}" ] && PLUGIN_ACCESS=${ACCESS}
 
-# 处理默认值
-[ -z "${PLUGIN_ACCESS}" ] && PLUGIN_ACCESS="public"
-
-
 # 处理配置带环境变量的情况
 PLUGIN_FOLDER=$(eval echo "${PLUGIN_FOLDER}")
 
@@ -34,13 +30,26 @@ cd "${PLUGIN_FOLDER}" || exit
 # 取出package.json配置
 [ -z "${PLUGIN_TAG}" ] && PLUGIN_TAG=$(yq eval .version package.json --output-format json --prettyPrint)
 NAME=$(yq eval .name package.json --output-format json --prettyPrint)
+PLUGIN_REGISTRY=$(yq eval .publishConfig.registry package.json --output-format json --prettyPrint)
+
+# 处理默认值
+[ -z "${PLUGIN_REGISTRY}" ] && PLUGIN_REGISTRY="https://registry.npmjs.org/"
+[ -z "${PLUGIN_ACCESS}" ] && PLUGIN_ACCESS="public"
 
 # 初始化NPM授权
-npm login --registry "${PLUGIN_REGISTRY}" << EOF
-${PLUGIN_USERNAME}
-${PLUGIN_PASSWORD}
-${PLUGIN_EMAIL}
+if [ -n "${PLUGIN_TOKEN}" ]; then
+  # 使用Token登录
+  cat>.npmrc<<EOF
+  _auth = $(echo "${PLUGIN_USERNAME}:${PLUGIN_PASSWORD}" | base64 --encode)
+  email = ${PLUGIN_EMAIL}
 EOF
+else
+  # 使用用户名密码登录
+  cat>.npmrc<<EOF
+  ${PLUGIN_REGISTRY}:_authToken=${PLUGIN_TOKEN}
+EOF
+fi
+npm set registry=${PLUGIN_REGISTRY}
 
 # 发布包
 EXIST=$(npm view "${NAME}@${PLUGIN_TAG}")
