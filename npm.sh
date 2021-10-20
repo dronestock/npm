@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "匹配不是Drone插件时的使用配置"
+# 匹配不是Drone插件时的使用配置
 [ -z "${PLUGIN_FOLDER}" ] && PLUGIN_FOLDER=${FOLDER}
 
 [ -z "${PLUGIN_REGISTRY}" ] && PLUGIN_REGISTRY=${REGISTRY}
@@ -12,7 +12,7 @@ echo "匹配不是Drone插件时的使用配置"
 [ -z "${PLUGIN_TAG}" ] && PLUGIN_TAG=${TAG}
 [ -z "${PLUGIN_ACCESS}" ] && PLUGIN_ACCESS=${ACCESS}
 
-echo "处理配置带环境变量的情况"
+# 处理配置带环境变量的情况
 PLUGIN_FOLDER=$(eval echo "${PLUGIN_FOLDER}")
 
 PLUGIN_USERNAME=$(eval echo "${PLUGIN_USERNAME}")
@@ -24,17 +24,24 @@ PLUGIN_TAG=$(eval echo "${PLUGIN_TAG}")
 PLUGIN_ACCESS=$(eval echo "${PLUGIN_ACCESS}")
 
 
-echo "进入目录"
+# 进入目录
 cd "${PLUGIN_FOLDER}" || exit
 
-echo "取出package.json配置"
+# 取出package.json配置
 VERSION=$(yq eval .version package.json --output-format json --prettyPrint | xargs)
 NAME=$(yq eval .name package.json --output-format json --prettyPrint | xargs)
 PLUGIN_REGISTRY=$(yq eval .publishConfig.registry package.json --output-format json --prettyPrint | xargs)
 
-echo "处理默认值"
+# 处理默认值
 [ -z "${PLUGIN_REGISTRY}" ] && PLUGIN_REGISTRY="https://registry.npmjs.org/"
 [ -z "${PLUGIN_ACCESS}" ] && PLUGIN_ACCESS="public"
+
+# 打印相关参数
+cat<<EOF
+包：${NAME}
+版本：${VERSION}
+仓库：${PLUGIN_REGISTRY}
+EOF
 
 # 初始化NPM授权
 if [ -n "${PLUGIN_TOKEN}" ]; then
