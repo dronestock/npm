@@ -6,7 +6,7 @@ ENV YQ_VERSION 4.13.4
 ENV YQ_BINARY yq_linux_amd64
 
 
-RUN wget https://download.fastgit.org/mikefarah/yq/releases/download/v${YQ_VERSION}/${YQ_BINARY} --output-document /usr/bin/yq
+RUN wget https://ghproxy.com/https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/${YQ_BINARY} --output-document /usr/bin/yq
 RUN chmod +x /usr/bin/yq
 
 
@@ -32,6 +32,7 @@ RUN set -ex \
     \
     # 安装NPM相关软件
     && apk add npm \
+    && npm install -g npm-cli-adduser \
     \
     \
     \
@@ -44,4 +45,4 @@ RUN set -ex \
 
 
 
-ENTRYPOINT /bin/mpm.sh
+ENTRYPOINT /bin/npm.sh
