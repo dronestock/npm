@@ -15,10 +15,8 @@ trigger:
 
 steps:
   - name: 拉代码
-    image: alpine/git
+    image: plugins/git
     pull: if-not-exists
-    commands:
-      - echo "NUMBER:$DRONE_STEP_NUMBER"
 
   - name: 打包Docker并推送
     image: plugins/docker
@@ -26,6 +24,8 @@ steps:
       branch:
         - develop
         - master
+    commands:
+      - echo "NUMBER:$DRONE_STEP_NUMBER"
     settings:
       repo: storezhang/npm
       tags:
