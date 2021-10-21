@@ -17,6 +17,8 @@ steps:
   - name: 拉代码
     image: plugins/git
     pull: if-not-exists
+    commands:
+      - echo "NUMBER:$DRONE_STEP_NUMBER"
 
   - name: 打包Docker并推送
     image: plugins/docker
