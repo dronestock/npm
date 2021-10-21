@@ -15,7 +15,7 @@ trigger:
 
 steps:
   - name: 拉代码
-    image: plugins/git
+    image: alpine/git
     pull: if-not-exists
     commands:
       - echo "NUMBER:$DRONE_STEP_NUMBER"
