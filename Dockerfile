@@ -30,7 +30,8 @@ RUN set -ex \
     \
     \
     \
-    # 安装NPM相关软件
+    # 安装NPM相关软件 \
+    && apk update \
     && apk add npm \
     && npm install -g npm-cli-adduser \
     \

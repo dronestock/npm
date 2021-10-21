@@ -24,8 +24,6 @@ steps:
       branch:
         - develop
         - master
-    commands:
-      - echo "NUMBER:$DRONE_STEP_NUMBER"
     settings:
       repo: storezhang/npm
       tags:
