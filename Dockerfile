@@ -1,28 +1,15 @@
-FROM storezhang/alpine AS builder
-
-
-# Yaml修改程序版本
-ENV YQ_VERSION 4.13.4
-ENV YQ_BINARY yq_linux_amd64
-
-
-RUN wget https://ghproxy.com/https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/${YQ_BINARY} --output-document /usr/bin/yq
-RUN chmod +x /usr/bin/yq
-
-
-
-# 打包真正的镜像
 FROM storezhang/alpine
 
 
-MAINTAINER storezhang "storezhang@gmail.com"
-LABEL architecture="AMD64/x86_64" version="latest" build="2021-10-20"
-LABEL Description="NPM发布包插件"
+LABEL author="storezhang<华寅>"
+LABEL email="storezhang@gmail.com"
+LABEL qq="160290688"
+LABEL wechat="storezhang"
+LABEL Description="Npm插件，支持发布包到仓库等功能"
 
 
 # 复制文件
-COPY --from=builder /usr/bin/yq /usr/bin/yq
-COPY npm.sh /bin
+COPY npm /bin
 
 
 
@@ -38,7 +25,7 @@ RUN set -ex \
     \
     \
     # 增加执行权限
-    && chmod +x /bin/npm.sh \
+    && chmod +x /bin/npm \
     \
     \
     \
@@ -46,4 +33,4 @@ RUN set -ex \
 
 
 
-ENTRYPOINT /bin/npm.sh
+ENTRYPOINT /bin/npm

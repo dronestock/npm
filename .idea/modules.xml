@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../drone-git/.idea/drone-git.iml" filepath="$PROJECT_DIR$/../drone-git/.idea/drone-git.iml" />
       <module fileurl="file://$PROJECT_DIR$/../drone-mcu/.idea/drone-mcu.iml" filepath="$PROJECT_DIR$/../drone-mcu/.idea/drone-mcu.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/drone-npm.iml" filepath="$PROJECT_DIR$/.idea/drone-npm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/npm.iml" filepath="$PROJECT_DIR$/.idea/npm.iml" />
     </modules>
   </component>
 </project>

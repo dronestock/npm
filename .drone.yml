@@ -15,26 +15,30 @@ trigger:
 
 steps:
   - name: 拉代码
-    image: plugins/git
-    pull: if-not-exists
+    image: dronestock/git
+    pull: always
 
-  - name: 打包Docker并推送
-    image: plugins/docker
-    when:
-      branch:
-        - develop
-        - master
+  - name: 编译
+    image: pangum/drone
+    pull: always
     settings:
-      repo: storezhang/npm
-      tags:
-        - latest
-      purge: true
-      compress: true
-      mirror: https://docker.mirrors.ustc.edu.cn
-      username: storezhang
+      output: npm
+
+  - name: 推送Docker镜像到中央库
+    image: dronestock/docker
+    pull: always
+    privileged: true
+    volumes:
+      - name: cache
+        path: /var/lib/docker
+    settings:
+      repository: dronestock/npm
+      username: dronestock
       password:
         from_secret: token_docker
 
+
 volumes:
-  - name: deps
-    temp: { }
+  - name: cache
+    host:
+      path: /var/lib/cache/docker
