@@ -13,7 +13,7 @@ type config struct {
 	Folder string `default:"${PLUGIN_FOLDER=${FOLDER=.}}"`
 
 	// 仓库地址
-	Registry string `default:"${PLUGIN_REGISTRY=${REGISTRY=https://registry.npmjs.org/}}"`
+	Registry string `default:"${PLUGIN_REGISTRY=${REGISTRY=https://registry.npmjs.org/}}" validate:"required,url"`
 	// 用户名
 	Username string `default:"${PLUGIN_USERNAME=${USERNAME}}" validate:"required"`
 	// 密码

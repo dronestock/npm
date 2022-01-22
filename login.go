@@ -21,19 +21,13 @@ func (p *plugin) login(logger simaqian.Logger) (undo bool, err error) {
 }
 
 func (p *plugin) loginWithToken(logger simaqian.Logger) (err error) {
-	var registry *url.URL
-	if registry, err = url.Parse(p.config.Registry); nil != err {
-		logger.Error(`配置的仓库不是有效的URL地址`, field.String(`registry`, p.config.Registry))
-	}
-	if nil != err {
-		return
-	}
-
-	// 记录日志
+	registry, _ := url.Parse(p.config.Registry)
 	fields := gox.Fields{
 		field.String(`username`, p.config.Username),
 		field.String(`registry`, p.config.Registry),
 	}
+
+	// 记录日志
 	logger.Info(`开始使用授权码方式登录仓库`, fields...)
 
 	if err = p.npm(logger, `config`, `set`, fmt.Sprintf(`//%s:_authToken`, registry.Host), p.config.Token); nil != err {
